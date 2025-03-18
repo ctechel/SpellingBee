@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+// Spelling Bee by Carter Techel
 /**
  * Spelling Bee
  *
@@ -22,7 +22,7 @@ import java.util.Scanner;
  * It utilizes recursion to generate the strings, mergesort to sort them, and
  * binary search to find them in a dictionary.
  *
- * @author Zach Blick, [ADD YOUR NAME HERE]
+ * @author Zach Blick, [Carter Techel]
  *
  * Written on March 5, 2023 for CS2 @ Menlo School
  *
@@ -51,7 +51,9 @@ public class SpellingBee {
     //  that will find the substrings recursively.
     public void sort() {
         // YOUR CODE HERE
+
     }
+
 
     // Removes duplicates from the sorted list.
     public void removeDuplicates() {
@@ -69,6 +71,26 @@ public class SpellingBee {
     //  If it is not in the dictionary, remove it from words.
     public void checkWords() {
         // YOUR CODE HERE
+        for (int i = 0; i < words.size(); i++)
+        {
+            if (!checkWord(words.get(i)));
+            {
+                words.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public boolean checkWord(String word)
+    {
+        for (int i = DICTIONARY_SIZE; i > 1; i = i/2)
+        {
+            if (word.equals(DICTIONARY[i]));
+            {
+                return true;
+            }
+
+        }
     }
 
     // Prints all valid words to wordList.txt
