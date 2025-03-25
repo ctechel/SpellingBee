@@ -45,13 +45,78 @@ public class SpellingBee {
     //  that will find the substrings recursively.
     public void generate() {
         // YOUR CODE HERE — Call your recursive method!
+        generateHelper("", letters);
+    }
+
+    public void generateHelper(String str, String letters)
+    {
+        // if the array list of words doesn't have the given str add it
+        if(!words.contains(str))
+        {
+            words.add(str);
+        }
+        for (int lettersLeft = 0; lettersLeft < letters.length(); lettersLeft++)
+        {
+            generateHelper(str + letters.charAt(lettersLeft), letters.substring(0, lettersLeft) + letters.substring(lettersLeft+1));
+        }
     }
 
     // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
         // YOUR CODE HERE
+        // run merge sort on the words you have in the array list of words
+        mergeSort(words, 0, words.size() - 1);
+    }
 
+    public ArrayList<String> mergeSort(ArrayList<String> merged, int low, int high)
+    {
+        // if the high and low are the same
+        if (high <= low)
+        {
+            ArrayList<String> newArr = new ArrayList<String>();
+            newArr.add(merged.get(low));
+            return newArr;
+        }
+        // find midpoint of array
+        int mid = (low + (high - low) / 2);
+        ArrayList<String> temp1 = mergeSort(merged, low, mid);
+        ArrayList<String> temp2 = mergeSort(merged, mid + 1, high);
+        return merge(temp1, temp2);
+    }
+
+    // merge the 2 arrays together
+    public ArrayList<String> merge(ArrayList<String> array1, ArrayList<String> array2)
+    {
+        ArrayList<String> merged = new ArrayList<String>();
+        int idx1 = 0;
+        int idx2 = 0;
+        // While neither are empty
+        while (idx1 < array1.size() && idx2 < array2.size())
+        {
+            if (array1.get(idx1).compareTo(array2.get(idx2)) < 0)
+            {
+                merged.add(array1.get(idx1));
+                idx1++;
+            }
+            else
+            {
+                merged.add(array2.get(idx2));
+                idx2++;
+            }
+        }
+        // add the rest to the end of the merged array
+        while (idx1 < array1.size())
+        {
+            merged.add(array1.get(idx1));
+            idx1++;
+        }
+        while (idx2 < array2.size())
+        {
+            merged.add(array2.get(idx2));
+            idx2++;
+        }
+        return merged;
     }
 
 
@@ -73,7 +138,7 @@ public class SpellingBee {
         // YOUR CODE HERE
         for (int i = 0; i < words.size(); i++)
         {
-            if (!checkWord(words.get(i)));
+            if (!checkWordHelper(words.get(i), 0, DICTIONARY_SIZE - 1))
             {
                 words.remove(i);
                 i--;
@@ -81,15 +146,26 @@ public class SpellingBee {
         }
     }
 
-    public boolean checkWord(String word)
+    public boolean checkWordHelper(String word, int start, int end)
     {
-        for (int i = DICTIONARY_SIZE; i > 1; i = i/2)
+        int mid = (start + (end - start) / 2);
+        if (word.equals(DICTIONARY[mid]))
         {
-            if (word.equals(DICTIONARY[i]));
-            {
-                return true;
-            }
-
+            return true;
+        }
+        if (end == start)
+        {
+            return false;
+        }
+        // word comes before
+        if (word.compareTo(DICTIONARY[mid]) < 0)
+        {
+            return checkWordHelper(word, start, mid);
+        }
+        // word comes after
+        else
+        {
+            return checkWordHelper(word, mid + 1, end);
         }
     }
 
